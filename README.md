@@ -40,3 +40,10 @@ This repository is your code.
 
 Then read `setup.md`. It is short, and it covers the two things that go wrong:
 committing a key, and committing a model.
+
+## Image size comparison
+
+| stage | image size |
+|---|---|
+| naive build (full base, cached pip) | 754 MB |
+| your slim build | 627 MB |
