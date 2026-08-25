@@ -47,3 +47,10 @@ committing a key, and committing a model.
 |---|---|
 | naive build (full base, cached pip) | 754 MB |
 | your slim build | 627 MB |
+
+## Image size comparison
+
+| stage | image size |
+|---|---|
+| naive build (full base, cached pip) | 6.6 GB |
+| your slim build | 627 MB |
