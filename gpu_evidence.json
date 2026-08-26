@@ -1,0 +1,6 @@
+{
+  "cuda": true,
+  "device_name": "Tesla T4",
+  "dtype": "torch.float16",
+  "tokens_per_s": 45.5
+}
