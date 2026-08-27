@@ -18,7 +18,7 @@ import time
 import uuid
 
 import torch
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from schemas import (
@@ -33,7 +33,11 @@ from schemas import (
 )
 
 MODEL_ID = os.environ.get("MODEL_ID", "Qwen/Qwen2.5-0.5B-Instruct")
+API_KEY = os.environ.get("API_KEY", "")
+MAX_TOKENS_LIMIT = int(os.environ.get("MAX_TOKENS", "256"))
 
+if not API_KEY:
+    print("WARNING: API_KEY is not set. Service running open to the world!")
 app = FastAPI(title="serving-stack", version="wk2")
 
 # Load once at import time. CPU only this week.
@@ -63,8 +67,10 @@ def health() -> HealthResponse:
 # GET /v1/models  -- TODO
 # ---------------------------------------------------------------------------
 @app.get("/v1/models", response_model=ModelList)
-def list_models() -> ModelList:
-   return ModelList(
+def list_models(authorization: str = Header(None)) -> ModelList:
+    if API_KEY and authorization != f"Bearer {API_KEY}":
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return ModelList(
     object="list",
     data=[
         ModelCard(
